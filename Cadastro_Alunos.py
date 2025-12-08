@@ -15,3 +15,11 @@ def carregar_dados():
             "cidade", "uf", "telefone", "email"
         ])
     return df
+
+# 2. SALVAR DADOS
+
+def salvar_dados(df):
+    """
+    Salvar o dataframe no arquivo alunos.csv.
+    """
+    df.to_csv("alunos.csv", index=False)
