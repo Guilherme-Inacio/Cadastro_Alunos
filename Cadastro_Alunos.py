@@ -37,5 +37,41 @@ def gerar_matricula(df):
         maior_matricula = df["matricula"].max()
         return maior_matricula + 1
     
-
+# 4. INSERIR ALUNO
     
+def inserir_aluno():
+    """
+    Insere um novo aluno no sistema.
+    """
+    df = carregar_dados()
+    
+    nome = input("Nome do aluno: ")
+    rua = input("Rua: ")
+    numero = input("Número: ")
+    bairro = input("Bairro: ")
+    cidade = input("Cidade: ")
+    uf = input("UF: ")
+    telefone = input("Telefone: ")
+    email = input("Email: ")
+    
+    matricula = gerar_matricula(df)
+    
+    novo_aluno = {
+        "matricula": matricula,
+        "nome": nome,
+        "rua": rua,
+        "numero": numero,
+        "bairro": bairro,
+        "cidade": cidade,
+        "uf": uf,
+        "telefone": telefone,
+        "email": email
+    }
+    
+    novo_df =pd.Dataframe([novo_aluno])
+    df = pd.concat([df, novo_df], ignore_index=True)
+
+    salvar_dados(df)
+    df.to_csv("alunos.csv", index=False)
+
+
