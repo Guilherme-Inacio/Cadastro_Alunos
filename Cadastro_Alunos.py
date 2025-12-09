@@ -109,3 +109,49 @@ def pesquisar_aluno():
 
     index = resultado.index[0]
     return index
+
+def editar_aluno(df, index):
+
+    print("\n--- EDITAR ALUNO ---")
+    print("\n DADOS ATUAIS DO ALUNO:")
+    print(df.loc[index])
+
+    print("\nQual campo deseja editar?")
+    print("1 - Nome")
+    print("2 - Rua")
+    print("3 - Número")
+    print("4 - Bairro")
+    print("5 - Cidade")
+    print("6 - UF")
+    print("7 - Telefone")
+    print("8 - Email")
+    print("0 - Voltar")
+
+    opcao = input("Escolha: ")
+
+    colunas = {
+        "1": "nome",
+        "2": "rua",
+        "3": "numero",
+        "4": "bairro",
+        "5": "cidade",
+        "6": "uf",
+        "7": "telefone",
+        "8": "email"
+    }
+
+    if opcao == 0:
+        print("Voltando ao menu principal.")
+        return df 
+    
+    if opcao not in colunas:
+        print("Opção inválida.")
+        return df
+    
+    coluna_escolhida = colunas[opcao]
+    novo_valor = input(f"Digite o novo valor para {coluna_escolhida}: ")
+    df.loc[index, coluna_escolhida] = novo_valor
+    salvar_dados(df)
+    print("Dados atualizados com sucesso.")
+    
+    return df
