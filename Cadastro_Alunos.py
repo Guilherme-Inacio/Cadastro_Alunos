@@ -1,6 +1,6 @@
 import pandas as pd
 
-# 1. CARREGAR DADOS
+# CARREGAR DADOS
 
 def carregar_dados():
     """
@@ -16,7 +16,7 @@ def carregar_dados():
         ])
     return df
 
-# 2. SALVAR DADOS
+# SALVAR DADOS
 
 def salvar_dados(df):
     """
@@ -24,7 +24,7 @@ def salvar_dados(df):
     """
     df.to_csv("alunos.csv", index=False)
 
-# 3. GERAR MATRICULA
+# GERAR MATRICULA
 
 def gerar_matricula(df):
     """
@@ -37,7 +37,7 @@ def gerar_matricula(df):
         maior_matricula = df["matricula"].max()
         return maior_matricula + 1
     
-# 4. INSERIR ALUNO
+# INSERIR ALUNO
     
 def inserir_aluno():
     """
@@ -74,4 +74,38 @@ def inserir_aluno():
     salvar_dados(df)
     df.to_csv("alunos.csv", index=False)
 
+# PESQUISAR ALUNO POR NOME OU MATRICULA
 
+def pesquisar_aluno():
+    """
+    Pesquisa um aluno por nome ou matrícula e retorna o índice do DataFrame.
+    """
+
+    print("Pesquisar aluno por:")
+    print("1 - Nome")
+    print("2 - Matrícula")
+    opcao = input("Escolha(1 ou 2): ")
+
+    if opcao == "1":
+        nome = input("Digite o nome do aluno: ")
+        df = carregar_dados()
+        resultado = df[df["nome"].str.lower() == nome.lower()]
+        if not resultado.empty:
+            print(resultado)
+        else:
+            print("Nenhum aluno encontrado com esse nome.")
+    
+    elif opcao == "2":
+        matricula = int(input("Digite a matrícula do aluno: "))
+        df = carregar_dados()
+        resultado = df[df["matricula"] == matricula]
+        if not resultado.empty:
+            print(resultado)
+        else:
+            print("Nenhum aluno encontrado com essa matrícula.")
+    else:
+        print("Opção inválida.")
+        return
+
+    index = resultado.index[0]
+    return index
