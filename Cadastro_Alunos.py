@@ -42,7 +42,7 @@ def gerar_matricula(df):
     
 # INSERIR ALUNO
     
-def inserir_aluno():
+def inserir_aluno(df):
     """
     Insere um novo aluno no sistema.
     """
@@ -74,16 +74,17 @@ def inserir_aluno():
     }
     
     # Adicionar o novo aluno ao DataFrame
-    novo_df =pd.Dataframe([novo_aluno])
+    novo_df =pd.DataFrame([novo_aluno])
     # Concatenar o novo DataFrame com o existente
     df = pd.concat([df, novo_df], ignore_index=True)
 
     salvar_dados(df)
-    df.to_csv("alunos.csv", index=False)
+
+    return df
 
 # PESQUISAR ALUNO POR NOME OU MATRICULA
 
-def pesquisar_aluno():
+def pesquisar_aluno(df):
     """
     Pesquisa um aluno por nome ou matrícula e retorna o índice do DataFrame.
     """
@@ -95,9 +96,8 @@ def pesquisar_aluno():
 
     if opcao == "1":
         nome = str(input("Digite o nome do aluno: ")).lower().strip()
-        df = carregar_dados()
         # Busca sem diferenciar maiusculas e minusculas
-        resultado = df[df["nome"]]
+        resultado = df[df["nome"].str.lower().str.strip() == nome]
         if not resultado.empty:
             print(resultado)
         else:
@@ -105,7 +105,6 @@ def pesquisar_aluno():
     
     elif opcao == "2":
         matricula = int(input("Digite a matrícula do aluno: "))
-        df = carregar_dados()
         resultado = df[df["matricula"] == matricula]
         if not resultado.empty:
             print(resultado)
@@ -152,7 +151,7 @@ def editar_aluno(df, index):
         "8": "email"
     }
 
-    if opcao == 0:
+    if opcao == "0":
         print("Voltando ao menu principal.")
         return df 
     
@@ -208,7 +207,7 @@ def menu_principal():
 
         if opcao == "1":
             # Inserir um novo aluno
-            inserir_aluno(df)
+            df = inserir_aluno(df)
 
         elif opcao == "2":
             index = pesquisar_aluno(df)
