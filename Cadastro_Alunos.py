@@ -169,3 +169,19 @@ def editar_aluno(df, index):
     print("Dados atualizados com sucesso.")
 
     return df
+
+def remover_aluno(df, index):
+    """
+    Remove o aluno e salva o dataframe atualizado.
+    """
+    print("\n--- REMOVER ALUNO ---")
+    confirmacao = input("Tem certeza que deseja remover este aluno? (s/n): ").lower().strip()
+    if confirmacao == "s":
+        # Remove o aluno do DataFrame
+        df = df.drop(index)
+        # Resetar o índice do DataFrame após a remoção
+        df = df.reset_index(drop=True)
+        salvar_dados(df)
+        print("Aluno removido com sucesso.")
+    else:
+        print("Remoção cancelada.")
