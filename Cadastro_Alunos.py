@@ -9,6 +9,7 @@ def carregar_dados():
     """
     try:
         df = pd.read_csv("alunos.csv")
+    # Caso o arquivo nao exista, cria um dataframe vazio com as colunas que vai usar    
     except FileNotFoundError:
         df = pd.DataFrame(columns=[
             "matricula", "nome", "rua", "numero", "bairro",
@@ -22,6 +23,7 @@ def salvar_dados(df):
     """
     Salvar o dataframe no arquivo alunos.csv.
     """
+    # Uso do index=False para nao salvar o indice do dataframe no csv
     df.to_csv("alunos.csv", index=False)
 
 # GERAR MATRICULA
@@ -30,9 +32,10 @@ def gerar_matricula(df):
     """
     Gera uma nova matricula baseada na maior matricula existente.
     """
-    #se nao tiver nenhum aluno cadastrado, retorna 1
+    # Se nao tiver nenhum aluno cadastrado, retorna 1 como primeira matricula
     if df.empty:
         return 1
+    # Senao, retorna a maior matricula + 1
     else:
         maior_matricula = df["matricula"].max()
         return maior_matricula + 1
@@ -54,8 +57,10 @@ def inserir_aluno():
     telefone = input("Telefone: ")
     email = input("Email: ")
     
+    # Gerar matricula unica
     matricula = gerar_matricula(df)
     
+    # Criar um dicionario com os dados do novo aluno
     novo_aluno = {
         "matricula": matricula,
         "nome": nome,
@@ -68,7 +73,9 @@ def inserir_aluno():
         "email": email
     }
     
+    # Adicionar o novo aluno ao DataFrame
     novo_df =pd.Dataframe([novo_aluno])
+    # Concatenar o novo DataFrame com o existente
     df = pd.concat([df, novo_df], ignore_index=True)
 
     salvar_dados(df)
@@ -87,9 +94,10 @@ def pesquisar_aluno():
     opcao = input("Escolha(1 ou 2): ")
 
     if opcao == "1":
-        nome = input("Digite o nome do aluno: ")
+        nome = str(input("Digite o nome do aluno: ")).lower().strip()
         df = carregar_dados()
-        resultado = df[df["nome"].str.lower() == nome.lower()]
+        # Busca sem diferenciar maiusculas e minusculas
+        resultado = df[df["nome"]]
         if not resultado.empty:
             print(resultado)
         else:
@@ -107,13 +115,17 @@ def pesquisar_aluno():
         print("Opção inválida.")
         return
 
+    # Retorna o índice do DataFrame do aluno encontrado
     index = resultado.index[0]
     return index
+
+# EDITAR ALUNO
 
 def editar_aluno(df, index):
 
     print("\n--- EDITAR ALUNO ---")
     print("\n DADOS ATUAIS DO ALUNO:")
+    # Mostra os dados atuais do aluno
     print(df.loc[index])
 
     print("\nQual campo deseja editar?")
@@ -144,14 +156,16 @@ def editar_aluno(df, index):
         print("Voltando ao menu principal.")
         return df 
     
+    # Verifica se a opcao é valida
     if opcao not in colunas:
         print("Opção inválida.")
         return df
     
+    # Pede o novo valor para a coluna escolhida
     coluna_escolhida = colunas[opcao]
     novo_valor = input(f"Digite o novo valor para {coluna_escolhida}: ")
     df.loc[index, coluna_escolhida] = novo_valor
     salvar_dados(df)
     print("Dados atualizados com sucesso.")
-    
+
     return df
