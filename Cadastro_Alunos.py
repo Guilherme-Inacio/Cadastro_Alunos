@@ -170,6 +170,8 @@ def editar_aluno(df, index):
 
     return df
 
+# REMOVER ALUNO
+
 def remover_aluno(df, index):
     """
     Remove o aluno e salva o dataframe atualizado.
@@ -185,3 +187,59 @@ def remover_aluno(df, index):
         print("Aluno removido com sucesso.")
     else:
         print("Remoção cancelada.")
+
+    return df
+
+# MENU PRINCIPAL
+
+def menu_principal():
+    """
+    Exibe o menu principal e gerencia as opções do usuário.
+    """
+    df = carregar_dados()
+
+    while True:
+        print("\n---MENU PRICIPAL---")
+        print("1 - INSERIR")
+        print("2 - PESQUISAR")
+        print("3 - SAIR")
+
+        opcao = input("Escolha(1, 2 ou 3): ")
+
+        if opcao == "1":
+            # Inserir um novo aluno
+            inserir_aluno(df)
+
+        elif opcao == "2":
+            index = pesquisar_aluno(df)
+            # Se um aluno foi encontrado
+            if index is not None:
+                print("\nO que deseja fazer?")
+                print("1 - EDITAR")
+                print("2 - REMOVER")
+                print("0 - VOLTAR")
+                escolha = input("Escolha(1, 2 ou 0): ")
+
+                if escolha == "1":
+                    # Editar o aluno
+                    df = editar_aluno(df, index)
+
+                elif escolha == "2":
+                    # Remover o aluno
+                    df = remover_aluno(df, index)
+
+                elif escolha == "0":
+                    # Voltar ao menu principal
+                    continue
+                
+                else:
+                    print("Opção inválida.")
+
+        elif opcao == "3":
+            print("Saindo do sistema.")
+            # Sair do loop infinito
+            break
+
+# EXECUTA O MENU PRINCIPAL
+
+menu_principal()
