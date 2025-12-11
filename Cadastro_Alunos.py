@@ -9,7 +9,7 @@ def carregar_dados():
     """
     try:
         df = pd.read_csv("alunos.csv")
-    # Caso o arquivo nao exista, cria um dataframe vazio com as colunas que vai usar    
+    # Carrega o arquivo alunos.csv. Se não existir, cria um novo DataFrame vazio.   
     except FileNotFoundError:
         df = pd.DataFrame(columns=[
             "matricula", "nome", "rua", "numero", "bairro",
@@ -74,7 +74,7 @@ def inserir_aluno(df):
     
     # Adicionar o novo aluno ao DataFrame
     novo_df =pd.DataFrame([novo_aluno])
-    # Concatenar o novo DataFrame com o existente
+    # Junto o aluno novo com o existente
     df = pd.concat([df, novo_df], ignore_index=True)
 
     salvar_dados(df)
@@ -95,7 +95,7 @@ def pesquisar_aluno(df):
 
     if opcao == "1":
         nome = str(input("Digite o nome do aluno: ")).lower().strip()
-        # Busca sem diferenciar maiusculas e minusculas
+        # Comparo tudo em minúsculo pra evitar erro se o usuário digitar diferente.
         resultado = df[df["nome"].str.lower().str.strip() == nome]
         if not resultado.empty:
             print(resultado)
@@ -104,16 +104,16 @@ def pesquisar_aluno(df):
             return None 
     
     elif opcao == "2":
-        matricula = int(input("Digite a matrícula do aluno: "))
-        resultado = df[df["matricula"] == matricula]
-        if not resultado.empty:
-            print(resultado)
-        else:
-            print("Nenhum aluno encontrado com essa matrícula.")
-            return None
+            matricula = int(input("Digite a matrícula do aluno: "))
+            resultado = df[df["matricula"] == matricula]
+            if not resultado.empty:
+                print(resultado)
+            else:
+                print("Nenhum aluno encontrado com essa matrícula.")
+                return None
     else:
         print("Opção inválida.")
-        return
+        return None
 
     # Retorna o índice do DataFrame do aluno encontrado
     index = resultado.index[0]
@@ -174,9 +174,10 @@ def editar_aluno(df, index):
 
 def remover_aluno(df, index):
     """
-    Remove o aluno e salva o dataframe atualizado.
+    Remove o aluno e salva no CSV
     """
     print("\n--- REMOVER ALUNO ---")
+    # So remove se o usuario confirmar
     confirmacao = input("Tem certeza que deseja remover este aluno? (s/n): ").lower().strip()
     if confirmacao == "s":
         # Remove o aluno do DataFrame
@@ -199,7 +200,7 @@ def menu_principal():
     df = carregar_dados()
 
     while True:
-        print("\n---MENU PRICIPAL---")
+        print("\n---MENU PRINCIPAL---")
         print("1 - INSERIR")
         print("2 - PESQUISAR")
         print("3 - SAIR")
