@@ -46,7 +46,6 @@ def inserir_aluno(df):
     """
     Insere um novo aluno no sistema.
     """
-    df = carregar_dados()
     
     nome = input("Nome do aluno: ")
     rua = input("Rua: ")
@@ -102,6 +101,7 @@ def pesquisar_aluno(df):
             print(resultado)
         else:
             print("Nenhum aluno encontrado com esse nome.")
+            return None 
     
     elif opcao == "2":
         matricula = int(input("Digite a matrícula do aluno: "))
@@ -110,6 +110,7 @@ def pesquisar_aluno(df):
             print(resultado)
         else:
             print("Nenhum aluno encontrado com essa matrícula.")
+            return None
     else:
         print("Opção inválida.")
         return
@@ -222,10 +223,12 @@ def menu_principal():
                 if escolha == "1":
                     # Editar o aluno
                     df = editar_aluno(df, index)
+                    df = carregar_dados()  # Recarregar os dados após a edição
 
                 elif escolha == "2":
                     # Remover o aluno
                     df = remover_aluno(df, index)
+                    df = carregar_dados()  # Recarregar os dados após a remoção
 
                 elif escolha == "0":
                     # Voltar ao menu principal
